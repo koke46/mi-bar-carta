@@ -198,6 +198,15 @@ document.getElementById('SX').onclick=CS;
 document.getElementById('BE').onclick=EP;
 document.getElementById('CK').onclick=function(){document.getElementById('CF').style.display='none';};
 renderMenu();
+(function(){
+  try{
+    var urlM=new URLSearchParams(window.location.search).get('mesa');
+    if(urlM){
+      var mi=document.getElementById('MI');
+      if(mi){mi.value=urlM;mi.style.display='none';}
+    }
+  }catch(e){}
+})();
 </script>
 </body>
 </html>
