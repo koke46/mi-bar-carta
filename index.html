@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Carta – JORGE LINERO</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f5f5;color:#1a1a2e;min-height:100vh}
+.hdr{background:#1a1a2e;color:#fff;padding:16px 20px;text-align:center;position:sticky;top:0;z-index:20}
+.hdr-n{font-size:20px;font-weight:700}
+.hdr-s{font-size:12px;opacity:.65;margin-top:2px}
+.tabs{background:#fff;border-bottom:1px solid #eee;padding:8px 12px;display:flex;gap:6px;overflow-x:auto;position:sticky;top:56px;z-index:19}
+.tabs::-webkit-scrollbar{display:none}
+.tab-a{flex-shrink:0;padding:6px 14px;border-radius:20px;background:#f0f0f0;color:#333;text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap;border:none;cursor:pointer;font-family:inherit}
+.tab-active{background:#e67e22;color:#fff;}
+.cat-section{background:#fff;margin:12px;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.cat-title{font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#888;padding:14px 16px 8px;background:#fff}
+.p-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid #f5f5f5}
+.p-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+.p-img{width:52px;height:52px;object-fit:cover;border-radius:10px;flex-shrink:0}
+.p-emoji{width:52px;height:52px;border-radius:10px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.p-info{flex:1;min-width:0}
+.p-nombre{font-size:15px;font-weight:600;color:#1a1a2e}
+.p-desc{font-size:12px;color:#999;margin-top:2px}
+.p-precio{font-size:15px;font-weight:700;color:#e67e22;margin-top:4px}
+.p-ctrl{flex-shrink:0;min-width:36px}
+.btn-add{width:36px;height:36px;border-radius:50%;background:#e67e22;color:#fff;border:none;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
+.qc{display:flex;align-items:center;gap:6px}
+.bq{width:30px;height:30px;border-radius:50%;border:2px solid #e67e22;background:#fff;color:#e67e22;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;touch-action:manipulation}
+.bqp{background:#e67e22;color:#fff}
+.qn{font-size:16px;font-weight:700;min-width:20px;text-align:center}
+.cart-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;border-radius:50px;padding:14px 24px;display:none;align-items:center;gap:12px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.3);z-index:100;min-width:220px;justify-content:space-between;touch-action:manipulation}
+.cb{background:#e67e22;color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none}
+.sh{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:24px 24px 0 0;z-index:201;transform:translateY(100%);transition:transform .3s;max-height:85vh;display:flex;flex-direction:column}
+.sh.open{transform:translateY(0)}
+.sh-hd{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid #f0f0f0;flex-shrink:0}
+.sh-tit{font-size:17px;font-weight:700}
+.sh-x{background:none;border:none;font-size:26px;color:#999;cursor:pointer}
+.sh-items{flex:1;overflow-y:auto;padding:0 16px}
+.sh-ft{padding:16px;border-top:1px solid #f0f0f0;flex-shrink:0}
+.mesa-in{width:100%;border:1.5px solid #e0e0e0;border-radius:12px;padding:12px 14px;font-size:15px;margin-bottom:12px;outline:none;-webkit-appearance:none}
+.mesa-in:focus{border-color:#e67e22}
+.tot-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.tot-v{font-size:20px;font-weight:800;color:#e67e22}
+.btn-env{width:100%;background:#e67e22;color:#fff;border:none;border-radius:14px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;touch-action:manipulation}
+.btn-env:disabled{opacity:.5}
+.cfm{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:none;align-items:center;justify-content:center}
+.cfm-box{background:#fff;border-radius:24px;padding:36px 28px;text-align:center;max-width:300px;margin:20px}
+.sp{height:100px}
+</style>
+</head>
+<body>
+<div class="hdr"><div class="hdr-n">JORGE LINERO</div><div class="hdr-s">Elige tus productos y envía el pedido</div></div>
+<div id="TABS" class="tabs" style="display:none"></div>
+<div id="MENU"></div>
+<div class="cart-bar" id="CB"><div style="display:flex;align-items:center;gap:10px"><div class="cb" id="CC">0</div><span style="font-size:14px;font-weight:600">Ver pedido</span></div><span id="CT" style="font-size:15px;font-weight:700;color:#e67e22">0,00 €</span></div>
+<div class="ov" id="OV"></div>
+<div class="sh" id="SH"><div class="sh-hd"><div class="sh-tit">Tu pedido</div><button class="sh-x" id="SX">×</button></div><div class="sh-items" id="SI"></div><div class="sh-ft"><input class="mesa-in" id="MI" type="text" placeholder="Mesa o nombre (ej: Mesa 3, Ana…)" maxlength="40"><div class="tot-row"><span style="font-size:15px;font-weight:600">Total</span><span class="tot-v" id="ST">0,00 €</span></div><button class="btn-env" id="BE">📲 Enviar pedido al bar</button></div></div>
+<div class="cfm" id="CF"><div class="cfm-box"><div style="font-size:52px;margin-bottom:12px">✅</div><div style="font-size:22px;font-weight:700;margin-bottom:8px">¡Pedido enviado!</div><div style="font-size:14px;color:#666;margin-bottom:24px">El camarero lo tiene. Ahora lo preparamos.</div><button id="CK" style="background:#e67e22;color:#fff;border:none;border-radius:14px;padding:14px 36px;font-size:16px;font-weight:700;cursor:pointer">OK</button></div></div>
+<script>
+var P={};
+P["mt7j87kcb3d8ow"]={n:"cerveza",p:2,e:"📦",c:"Alcohol"};
+P["mt7j9udv1jaagk"]={n:"arroz con pollo",p:3.5,e:"📦",c:"Comida"};
+P["mt7jhx0jj4gbpp"]={n:"churros",p:2,e:"📦",c:"Churros"};
+P["mt8tbupqqj8hno"]={n:"cocacola",p:2,e:"📦",c:"Bebidas"};
+P["mt8tev0fnc4196"]={n:"tortilla de patatas",p:2.5,e:"📦",c:"Tapas"};
+P["mt8tg9y8zqy0q8"]={n:"ensaladillas",p:2.5,e:"📦",c:"Tapas"};
+var C={};
+var IDS=["mt7j87kcb3d8ow","mt7j9udv1jaagk","mt7jhx0jj4gbpp","mt8tbupqqj8hno","mt8tev0fnc4196","mt8tg9y8zqy0q8"];
+var HS=true;
+var SU="https://aqbdlvmfbdagypmwxhca.supabase.co";
+var SK="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxYmRsdm1mYmRhZ3lwbXd4aGNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc1ODM0NjIsImV4cCI6MjEwMzE1OTQ2Mn0.14wGoy4AQXhu9ZBTz4IAKBUXvRqveQZ1z-OKAMjm4gE";
+function fe(v){return(+v).toFixed(2).replace('.',',')+' €';}
+function mk(t,c){var e=document.createElement(t);if(c)e.className=c;return e;}
+function RC(id){
+  var el=document.getElementById('k'+id);if(!el)return;
+  var q=C[id]||0;el.innerHTML='';
+  if(!q){var b=mk('button','btn-add');b.textContent='+';b.onclick=function(){add(id);};el.appendChild(b);}
+  else{
+    var w=mk('div','qc');
+    var bm=mk('button','bq');bm.innerHTML='−';bm.onclick=function(){rem(id);};
+    var sp=mk('span','qn');sp.textContent=q;
+    var bp=mk('button','bq bqp');bp.textContent='+';bp.onclick=function(){add(id);};
+    w.appendChild(bm);w.appendChild(sp);w.appendChild(bp);el.appendChild(w);
+  }
+}
+function tot(){var t=0,c=0;for(var id in C){if(P[id]){t+=P[id].p*C[id];c+=C[id];}}return{t:t,c:c};}
+function RB(){var r=tot();document.getElementById('CC').textContent=r.c;document.getElementById('CT').textContent=fe(r.t);document.getElementById('CB').style.display=r.c?'flex':'none';var s=document.getElementById('ST');if(s)s.textContent=fe(r.t);}
+function add(id){C[id]=(C[id]||0)+1;RC(id);RB();}
+function rem(id){if(!C[id])return;C[id]--;if(!C[id])delete C[id];RC(id);RB();}
+function RS(){
+  var cont=document.getElementById('SI');cont.innerHTML='';
+  var ids=Object.keys(C);
+  if(!ids.length){var d=mk('div');d.style.cssText='text-align:center;padding:32px;color:#aaa';d.textContent='No has añadido nada';cont.appendChild(d);RB();return;}
+  ids.forEach(function(id){
+    var q=C[id];var pr=P[id];if(!pr)return;
+    var row=mk('div');row.style.cssText='display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid #f5f5f5';
+    var ic=mk('div');ic.style.cssText='width:44px;height:44px;border-radius:8px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:22px';ic.textContent=pr.e;
+    var inf=mk('div');inf.style.flex='1';
+    var nm=mk('div');nm.style.cssText='font-weight:600;font-size:14px';nm.textContent=pr.n;
+    var pv=mk('div');pv.style.cssText='color:#e67e22;font-size:13px;margin-top:2px';pv.textContent=fe(pr.p*q);
+    inf.appendChild(nm);inf.appendChild(pv);
+    var w=mk('div','qc');
+    var bm=mk('button','bq');bm.innerHTML='−';(function(i){bm.onclick=function(){rem(i);RS();};})(id);
+    var sp=mk('span','qn');sp.textContent=q;
+    var bp=mk('button','bq bqp');bp.textContent='+';(function(i){bp.onclick=function(){add(i);RS();};})(id);
+    w.appendChild(bm);w.appendChild(sp);w.appendChild(bp);
+    row.appendChild(ic);row.appendChild(inf);row.appendChild(w);cont.appendChild(row);
+  });
+  RB();
+}
+function AS(){RS();document.getElementById('OV').style.display='block';document.getElementById('SH').classList.add('open');}
+function CS(){document.getElementById('OV').style.display='none';document.getElementById('SH').classList.remove('open');}
+function EP(){
+  if(!HS){alert('Pedidos no disponibles en este momento.');return;}
+  var r=tot();if(!r.c){alert('Añade algo primero.');return;}
+  var mesa=(document.getElementById('MI').value||'').trim()||'Sin mesa';
+  var items=[];for(var id in C){if(P[id])items.push({productoId:id,nombre:P[id].n,precio:P[id].p,cantidad:C[id],emoji:P[id].e});}
+  var btn=document.getElementById('BE');btn.disabled=true;btn.textContent='⏳ Enviando...';
+  fetch(SU+'/rest/v1/pedidos',{
+    method:'POST',
+    headers:{'apikey':SK,'Authorization':'Bearer '+SK,'Content-Type':'application/json','Prefer':'return=minimal'},
+    body:JSON.stringify({mesa:mesa,items:items,total:r.t,estado:'pendiente'})
+  }).then(function(res){
+    if(!res.ok){res.text().then(function(t){btn.disabled=false;btn.textContent='📲 Enviar pedido al bar';alert('Error '+res.status+': '+t);});return;}
+    C={};IDS.forEach(function(i){RC(i);});RB();CS();document.getElementById('CF').style.display='flex';
+    btn.disabled=false;btn.textContent='📲 Enviar pedido al bar';
+  }).catch(function(e){btn.disabled=false;btn.textContent='📲 Enviar pedido al bar';alert('Error: '+e.message);});
+}
+function getCats(){
+  var seen={};var cats=[];
+  IDS.forEach(function(id){var c=P[id]&&P[id].c;if(c&&!seen[c]){seen[c]=1;cats.push(c);}});
+  cats.sort();
+  if(IDS.some(function(id){return P[id]&&!P[id].c;})) cats.push(null);
+  return cats;
+}
+function renderMenu(){
+  var cats=getCats();
+  var menu=document.getElementById('MENU');menu.innerHTML='';
+  var tabs=document.getElementById('TABS');tabs.innerHTML='';
+  if(!IDS.length){var emp=mk('p');emp.style.cssText='text-align:center;padding:48px;color:#aaa';emp.textContent='La carta está vacía';menu.appendChild(emp);return;}
+  var secs=[];
+  cats.forEach(function(cat){
+    var label=cat||'Otros';
+    var sec=mk('section','cat-section');
+    var tit=mk('div','cat-title');tit.textContent=label;sec.appendChild(tit);
+    IDS.forEach(function(id){
+      if(!P[id]) return;
+      var pc=P[id].c||'';
+      if(cat&&pc!==cat) return;
+      if(!cat&&pc) return;
+      var row=mk('div','p-row');
+      var left=mk('div','p-left');
+      var em=mk('div','p-emoji');em.textContent=P[id].e;
+      var info=mk('div','p-info');
+      var nm=mk('div','p-nombre');nm.textContent=P[id].n;
+      var pr=mk('div','p-precio');pr.textContent=fe(P[id].p);
+      info.appendChild(nm);info.appendChild(pr);
+      left.appendChild(em);left.appendChild(info);
+      var ctrl=mk('div','p-ctrl');ctrl.id='k'+id;
+      row.appendChild(left);row.appendChild(ctrl);
+      sec.appendChild(row);
+    });
+    secs.push({cat:cat,label:label,el:sec});
+    menu.appendChild(sec);
+  });
+  var sp=mk('div','sp');menu.appendChild(sp);
+  var namedCats=cats.filter(function(c){return c;});
+  if(namedCats.length>1){
+    tabs.style.display='flex';
+    // Botón "Todos"
+    var btnTodos=mk('button','tab-a tab-active');btnTodos.textContent='Todos';
+    tabs.appendChild(btnTodos);
+    btnTodos.onclick=function(){
+      secs.forEach(function(s){s.el.style.display='';});
+      tabs.querySelectorAll('.tab-a').forEach(function(b){b.classList.remove('tab-active');});
+      btnTodos.classList.add('tab-active');
+    };
+    namedCats.forEach(function(cat){
+      var btn=mk('button','tab-a');btn.textContent=cat;
+      tabs.appendChild(btn);
+      btn.onclick=function(){
+        secs.forEach(function(s){s.el.style.display=s.cat===cat?'':'none';});
+        tabs.querySelectorAll('.tab-a').forEach(function(b){b.classList.remove('tab-active');});
+        btn.classList.add('tab-active');
+      };
+    });
+  } else {
+    tabs.style.display='none';
+  }
+  IDS.forEach(function(id){RC(id);});
+}
+document.getElementById('CB').onclick=AS;
+document.getElementById('OV').onclick=CS;
+document.getElementById('SX').onclick=CS;
+document.getElementById('BE').onclick=EP;
+document.getElementById('CK').onclick=function(){document.getElementById('CF').style.display='none';};
+renderMenu();
+</script>
+</body>
+</html>
