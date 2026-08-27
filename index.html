@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Carta – JORGE LINERO</title>
+<title>Carta – popo</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f5f5;color:#1a1a2e;min-height:100vh}
@@ -23,6 +23,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .p-info{flex:1;min-width:0}
 .p-nombre{font-size:15px;font-weight:600;color:#1a1a2e}
 .p-desc{font-size:12px;color:#999;margin-top:2px}
+.p-alerg{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px}
+.alerg-chip{font-size:10px;background:#fff3e0;border:1px solid #f0c080;border-radius:6px;padding:1px 5px;color:#a0522d;white-space:nowrap}
 .p-precio{font-size:15px;font-weight:700;color:#e67e22;margin-top:4px}
 .p-ctrl{flex-shrink:0;min-width:36px}
 .btn-add{width:36px;height:36px;border-radius:50%;background:#e67e22;color:#fff;border:none;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
@@ -46,32 +48,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .tot-v{font-size:20px;font-weight:800;color:#e67e22}
 .btn-env{width:100%;background:#e67e22;color:#fff;border:none;border-radius:14px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;touch-action:manipulation}
 .btn-env:disabled{opacity:.5}
+.nota-inp{width:100%;margin-top:6px;padding:6px 10px;font-size:12px;border:1.5px solid #e0e0e0;border-radius:8px;box-sizing:border-box;font-family:inherit;color:#333;background:#fafafa;}
+.nota-inp:focus{outline:none;border-color:#e67e22;background:#fff;}
+.nota-lbl{font-size:11px;color:#aaa;margin-top:4px;}
 .cfm{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:none;align-items:center;justify-content:center}
 .cfm-box{background:#fff;border-radius:24px;padding:36px 28px;text-align:center;max-width:300px;margin:20px}
 .sp{height:100px}
 </style>
 </head>
 <body>
-<div class="hdr"><div class="hdr-n">JORGE LINERO</div><div class="hdr-s">Elige tus productos y envía el pedido</div></div>
+<div class="hdr"><div class="hdr-n">popo</div><div class="hdr-s">Elige tus productos y envía el pedido</div></div>
 <div id="TABS" class="tabs" style="display:none"></div>
 <div id="MENU"></div>
 <div class="cart-bar" id="CB"><div style="display:flex;align-items:center;gap:10px"><div class="cb" id="CC">0</div><span style="font-size:14px;font-weight:600">Ver pedido</span></div><span id="CT" style="font-size:15px;font-weight:700;color:#e67e22">0,00 €</span></div>
 <div class="ov" id="OV"></div>
-<div class="sh" id="SH"><div class="sh-hd"><div class="sh-tit">Tu pedido</div><button class="sh-x" id="SX">×</button></div><div class="sh-items" id="SI"></div><div class="sh-ft"><input class="mesa-in" id="MI" type="text" placeholder="Mesa o nombre (ej: Mesa 3, Ana…)" maxlength="40"><div class="tot-row"><span style="font-size:15px;font-weight:600">Total</span><span class="tot-v" id="ST">0,00 €</span></div><button class="btn-env" id="BE">📲 Enviar pedido al bar</button></div></div>
+<div class="sh" id="SH"><div class="sh-hd"><div class="sh-tit">Tu pedido</div><button class="sh-x" id="SX">×</button></div><div class="sh-items" id="SI"></div><div class="sh-ft"><input class="mesa-in" id="MI" type="text" placeholder="Mesa o nombre (ej: Mesa 3, Ana…)" maxlength="40"><div class="tot-row"><span style="font-size:15px;font-weight:600">Total</span><span class="tot-v" id="ST">0,00 €</span></div><button class="btn-env" id="BE">⚠️ Sin sistema de pedidos</button><p style="font-size:12px;color:#e67e22;text-align:center;margin-top:8px">El bar aún no tiene pedidos online</p></div></div>
 <div class="cfm" id="CF"><div class="cfm-box"><div style="font-size:52px;margin-bottom:12px">✅</div><div style="font-size:22px;font-weight:700;margin-bottom:8px">¡Pedido enviado!</div><div style="font-size:14px;color:#666;margin-bottom:24px">El camarero lo tiene. Ahora lo preparamos.</div><button id="CK" style="background:#e67e22;color:#fff;border:none;border-radius:14px;padding:14px 36px;font-size:16px;font-weight:700;cursor:pointer">OK</button></div></div>
 <script>
+var ALE={gluten:'🌾 Gluten',lacteos:'🥛 Lácteos',huevos:'🥚 Huevos',pescado:'🐟 Pescado',crustaceos:'🦐 Crustáceos',moluscos:'🦑 Moluscos',cacahuetes:'🥜 Cacahuetes',frutosSecos:'🌰 Frutos secos',soja:'🫘 Soja',mostaza:'🌶️ Mostaza',sesamo:'🫙 Sésamo',apio:'🌿 Apio',sulfitos:'🍷 Sulfitos',altramuces:'🌼 Altramuces'};
 var P={};
-P["mt7j87kcb3d8ow"]={n:"cerveza",p:2,e:"📦",c:"Alcohol"};
-P["mt7j9udv1jaagk"]={n:"arroz con pollo",p:3.5,e:"📦",c:"Comida"};
-P["mt7jhx0jj4gbpp"]={n:"churros",p:2,e:"📦",c:"Churros"};
-P["mt8tbupqqj8hno"]={n:"cocacola",p:2,e:"📦",c:"Bebidas"};
-P["mt8tev0fnc4196"]={n:"tortilla de patatas",p:2.5,e:"📦",c:"Tapas"};
-P["mt8tg9y8zqy0q8"]={n:"ensaladillas",p:2.5,e:"📦",c:"Tapas"};
-var C={};
-var IDS=["mt7j87kcb3d8ow","mt7j9udv1jaagk","mt7jhx0jj4gbpp","mt8tbupqqj8hno","mt8tev0fnc4196","mt8tg9y8zqy0q8"];
-var HS=true;
-var SU="https://aqbdlvmfbdagypmwxhca.supabase.co";
-var SK="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxYmRsdm1mYmRhZ3lwbXd4aGNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc1ODM0NjIsImV4cCI6MjEwMzE1OTQ2Mn0.14wGoy4AQXhu9ZBTz4IAKBUXvRqveQZ1z-OKAMjm4gE";
+P["mtbj1lozgp5alu"]={n:"12 bocadillo floy",p:4.8,e:"📦",c:"Bocadillos",al:[],an:0,d:"filete de pollo, salsa roque"};
+var C={};var N={};
+var IDS=["mtbj1lozgp5alu"];
+var HS=false;
+var SU="";
+var SK="";
 function fe(v){return(+v).toFixed(2).replace('.',',')+' €';}
 function mk(t,c){var e=document.createElement(t);if(c)e.className=c;return e;}
 function RC(id){
@@ -108,6 +109,14 @@ function RS(){
     var bp=mk('button','bq bqp');bp.textContent='+';(function(i){bp.onclick=function(){add(i);RS();};})(id);
     w.appendChild(bm);w.appendChild(sp);w.appendChild(bp);
     row.appendChild(ic);row.appendChild(inf);row.appendChild(w);cont.appendChild(row);
+    // Nota por artículo (solo si el producto lo permite)
+    if(pr.an){
+      var wrap=mk('div');wrap.style.cssText='padding:0 0 8px 0';
+      var lbl=mk('div','nota-lbl');lbl.textContent='📝 Nota (sin cebolla, sin gluten…)';
+      var inp=mk('input','nota-inp');inp.type='text';inp.placeholder='Opcional';inp.maxLength=80;inp.value=N[id]||'';
+      (function(i){inp.oninput=function(){N[i]=this.value.trim();};})(id);
+      wrap.appendChild(lbl);wrap.appendChild(inp);cont.appendChild(wrap);
+    }
   });
   RB();
 }
@@ -117,7 +126,7 @@ function EP(){
   if(!HS){alert('Pedidos no disponibles en este momento.');return;}
   var r=tot();if(!r.c){alert('Añade algo primero.');return;}
   var mesa=(document.getElementById('MI').value||'').trim()||'Sin mesa';
-  var items=[];for(var id in C){if(P[id])items.push({productoId:id,nombre:P[id].n,precio:P[id].p,cantidad:C[id],emoji:P[id].e});}
+  var items=[];for(var id in C){if(P[id]){var it={productoId:id,nombre:P[id].n,precio:P[id].p,cantidad:C[id],emoji:P[id].e};if(N[id])it.nota=N[id];items.push(it);}}
   var btn=document.getElementById('BE');btn.disabled=true;btn.textContent='⏳ Enviando...';
   fetch(SU+'/rest/v1/pedidos',{
     method:'POST',
@@ -125,7 +134,7 @@ function EP(){
     body:JSON.stringify({mesa:mesa,items:items,total:r.t,estado:'pendiente'})
   }).then(function(res){
     if(!res.ok){res.text().then(function(t){btn.disabled=false;btn.textContent='📲 Enviar pedido al bar';alert('Error '+res.status+': '+t);});return;}
-    C={};IDS.forEach(function(i){RC(i);});RB();CS();document.getElementById('CF').style.display='flex';
+    C={};N={};IDS.forEach(function(i){RC(i);});RB();CS();document.getElementById('CF').style.display='flex';
     btn.disabled=false;btn.textContent='📲 Enviar pedido al bar';
   }).catch(function(e){btn.disabled=false;btn.textContent='📲 Enviar pedido al bar';alert('Error: '+e.message);});
 }
@@ -157,7 +166,14 @@ function renderMenu(){
       var info=mk('div','p-info');
       var nm=mk('div','p-nombre');nm.textContent=P[id].n;
       var pr=mk('div','p-precio');pr.textContent=fe(P[id].p);
-      info.appendChild(nm);info.appendChild(pr);
+      info.appendChild(nm);
+      if(P[id].d){var desc=mk('div','p-desc');desc.textContent=P[id].d;info.appendChild(desc);}
+      if(P[id].al&&P[id].al.length){
+        var alRow=mk('div','p-alerg');
+        P[id].al.forEach(function(aid){var a=ALE[aid];if(a){var t=mk('span','alerg-chip');t.textContent=a;alRow.appendChild(t);}});
+        info.appendChild(alRow);
+      }
+      info.appendChild(pr);
       left.appendChild(em);left.appendChild(info);
       var ctrl=mk('div','p-ctrl');ctrl.id='k'+id;
       row.appendChild(left);row.appendChild(ctrl);
